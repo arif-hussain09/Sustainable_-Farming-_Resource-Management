@@ -1,2 +1,2 @@
-# Sustainable_-Farming-_Resource-Management
+# Sustainable-Farming-Resource-Management
 3rd semester DBMS Project
