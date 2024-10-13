@@ -1,0 +1,113 @@
+{%extends 'main.html'%}
+
+{% block content%}
+
+
+   <!-- Main Container for Farmer Profile Page -->
+   <div class="container mt-5">
+    <h3>Farmer Profile</h3>
+
+    <!-- Farmer Profile Card -->
+    <div class="card mb-4">
+        <div class="card-body text-center">
+            <img src="profile-pic.jpg" alt="Profile Picture" class="rounded-circle" width="150" height="150">
+            <h5 class="card-title">John Doe</h5>
+            <p><strong>Email:</strong> john.doe@example.com</p>
+            <p><strong>Phone:</strong> +1 234 567 890</p>
+            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editProfileModal">Edit Profile</button>
+        </div>
+    </div>
+
+    <!-- Performance Metrics -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Performance Metrics</h5>
+            <p><strong>Total Farms Worked:</strong> 3</p>
+            <p><strong>Total Yield (in tons):</strong> 18</p>
+            <p><strong>Health Reports Submitted:</strong> 5</p>
+        </div>
+    </div>
+
+    <!-- Working Farms -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Working Farms</h5>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Farm Name</th>
+                        <th>Location</th>
+                        <th>Area (acres)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Farm A</td>
+                        <td>123 Farm Lane</td>
+                        <td>10</td>
+                    </tr>
+                    <tr>
+                        <td>Farm B</td>
+                        <td>456 Green Road</td>
+                        <td>12</td>
+                    </tr>
+                    <tr>
+                        <td>Farm C</td>
+                        <td>789 Orchard Blvd</td>
+                        <td>8</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Profile Modal -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editProfileForm">
+                    <div class="mb-3">
+                        <label for="farmerName" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="farmerName" value="John Doe" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="farmerEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="farmerEmail" value="john.doe@example.com" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="farmerPhone" class="form-label">Phone</label>
+                        <input type="tel" class="form-control" id="farmerPhone" value="+1 234 567 890" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="profilePic" class="form-label">Profile Picture URL</label>
+                        <input type="text" class="form-control" id="profilePic" value="profile-pic.jpg" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="updateProfile()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+<!-- JavaScript for modal functionality -->
+<script>
+    function updateProfile() {
+        // Function to update farmer profile (you can add actual backend calls here)
+        alert('Profile updated successfully!');
+        $('#editProfileModal').modal('hide');
+    }
+</script>
+{%endblock%}
