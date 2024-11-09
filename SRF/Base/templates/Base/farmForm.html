@@ -1,0 +1,60 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<head>
+    <style>
+        /* Styling for the form container */
+        .form-container {
+            max-width: 600px;  /* Reduced size for a more compact form */
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Styling for the form */
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Styling for the submit button */
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        /* Hover effect for the button */
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Styling for the heading */
+        .form-title {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+
+<div class="form-container">
+    <div class="form-title">
+        Topic: <strong>Farm Form</strong>
+    </div>
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+{% endblock %}

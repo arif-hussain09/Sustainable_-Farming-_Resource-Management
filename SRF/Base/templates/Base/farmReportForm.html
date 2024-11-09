@@ -1,0 +1,81 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-primary text-white text-center">
+            <h3 class="mb-0">Add Farm Report</h3>
+        </div>
+        <div class="card-body">
+            <form method="POST" action="" enctype="multipart/form-data" class="form">
+                {% csrf_token %}
+
+                <!-- Iterate over the form fields and add Bootstrap styling -->
+                {% for field in form %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                        {{ field }}
+                        
+                        <!-- Show error messages for each field -->
+                        {% if field.errors %}
+                            <div class="text-danger">
+                                {% for error in field.errors %}
+                                    <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <!-- Submit Button -->
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-success px-4 py-2 rounded-pill">Submit Report</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Additional custom styling */
+    .container {
+        max-width: 600px;
+    }
+    .form-group {
+        margin-bottom: 1rem;
+    }
+    .form-label {
+        font-weight: 500;
+    }
+    .card-header h3 {
+        font-size: 1.6rem;
+    }
+    .btn-success {
+        font-size: 1rem;
+        background-color: #28a745;
+        transition: background-color 0.3s ease;
+    }
+    .btn-success:hover {
+        background-color: #218838;
+    }
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea {
+        font-size: 0.9rem;
+        border-radius: 0.25rem;
+        padding: 10px;
+        width: 100%;
+        margin-top: 5px;
+    }
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    select:focus,
+    textarea:focus {
+        border-color: #007bff;
+        outline: none;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+    }
+</style>
+
+{% endblock %}

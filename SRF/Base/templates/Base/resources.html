@@ -1,119 +1,175 @@
-{%extends 'main.html'%}
+{% extends 'main.html' %}
 
-{% block content%}
+{% block content %}
+<!-- DataTables CSS -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 
-    <!-- Main Container for Resources Page -->
-    <div class="container mt-5">
-        <h3>Resources Overview</h3>
+<!-- Custom CSS Styles -->
+<style>
+    .container {
+        background-color: #f8f9fa;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
 
-        <!-- Chart Section -->
-        <div class="row mb-4">
-            <div class="col-md-12">
-                <canvas id="resourcesChart"></canvas>
-            </div>
-        </div>
+    h3 {
+        color: #333;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+    }
 
-        <!-- Resource Table for Farms -->
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Farm Name</th>
-                    <th>Imported Resources (Units)</th>
-                    <th>Used Resources (Units)</th>
-                    <th>Available Resources (Units)</th>
-                    <th>Stored Resources (Units)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><a href="farm_detail.html?farm_id=1">Farm A</a></td>
-                    <td><a href="resource_report.html?farm_id=1&resource_type=imported">100</a></td>
-                    <td><a href="resource_report.html?farm_id=1&resource_type=used">60</a></td>
-                    <td><a href="resource_report.html?farm_id=1&resource_type=available">30</a></td>
-                    <td><a href="resource_report.html?farm_id=1&resource_type=stored">10</a></td>
-                </tr>
-                <tr>
-                    <td><a href="farm_detail.html?farm_id=2">Farm B</a></td>
-                    <td><a href="resource_report.html?farm_id=2&resource_type=imported">200</a></td>
-                    <td><a href="resource_report.html?farm_id=2&resource_type=used">150</a></td>
-                    <td><a href="resource_report.html?farm_id=2&resource_type=available">40</a></td>
-                    <td><a href="resource_report.html?farm_id=2&resource_type=stored">10</a></td>
-                </tr>
-                <tr>
-                    <td><a href="farm_detail.html?farm_id=3">Farm C</a></td>
-                    <td><a href="resource_report.html?farm_id=3&resource_type=imported">300</a></td>
-                    <td><a href="resource_report.html?farm_id=3&resource_type=used">200</a></td>
-                    <td><a href="resource_report.html?farm_id=3&resource_type=available">80</a></td>
-                    <td><a href="resource_report.html?farm_id=3&resource_type=stored">20</a></td>
-                </tr>
-                <tr>
-                    <td><a href="farm_detail.html?farm_id=4">Farm D</a></td>
-                    <td><a href="resource_report.html?farm_id=4&resource_type=imported">150</a></td>
-                    <td><a href="resource_report.html?farm_id=4&resource_type=used">100</a></td>
-                    <td><a href="resource_report.html?farm_id=4&resource_type=available">30</a></td>
-                    <td><a href="resource_report.html?farm_id=4&resource_type=stored">20</a></td>
-                </tr>
-                <tr>
-                    <td><a href="farm_detail.html?farm_id=5">Farm E</a></td>
-                    <td><a href="resource_report.html?farm_id=5&resource_type=imported">120</a></td>
-                    <td><a href="resource_report.html?farm_id=5&resource_type=used">80</a></td>
-                    <td><a href="resource_report.html?farm_id=5&resource_type=available">30</a></td>
-                    <td><a href="resource_report.html?farm_id=5&resource_type=stored">10</a></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    #resourceTable {
+        width: 100%;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    }
 
-    <!-- Chart.js Script -->
-    <script>
-        const ctx = document.getElementById('resourcesChart').getContext('2d');
-        const resourcesChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Farm A', 'Farm B', 'Farm C', 'Farm D', 'Farm E'], // Farm names
-                datasets: [
-                    {
-                        label: 'Imported Resources',
-                        data: [100, 200, 300, 150, 120], // Imported resources data
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
-                    },
-                    {
-                        label: 'Used Resources',
-                        data: [60, 150, 200, 100, 80], // Used resources data
-                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                        borderColor: 'rgba(255, 99, 132, 1)',
-                        borderWidth: 1
-                    },
-                    {
-                        label: 'Available Resources',
-                        data: [30, 40, 80, 30, 30], // Available resources data
-                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        borderWidth: 1
-                    },
-                    {
-                        label: 'Stored Resources',
-                        data: [10, 10, 20, 20, 10], // Stored resources data
-                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
-                        borderColor: 'rgba(153, 102, 255, 1)',
-                        borderWidth: 1
-                    }
-                ]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
+    #resourceTable th {
+        background-color: #007bff;
+        color: white;
+        text-align: center;
+        padding: 12px;
+    }
+
+    #resourceTable td, #resourceTable th {
+        padding: 10px;
+        text-align: center;
+    }
+
+    #resourceTable tbody tr {
+        transition: background-color 0.3s;
+    }
+
+    #resourceTable tbody tr:hover {
+        background-color: #e9f5ff;
+    }
+
+    #resourceTable td a {
+        color: #007bff;
+        font-weight: 500;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+    #resourceTable td a:hover {
+        color: #0056b3;
+    }
+
+    /* Chart Container Styling */
+    #resourcesChart {
+        margin-top: 2rem;
+        padding: 1rem;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-add-resource {
+        background-color: #28a745;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        margin-bottom: 1rem;
+    }
+
+    .btn-add-resource:hover {
+        background-color: #218838;
+    }
+</style>
+
+<div class="container mt-5">
+    <h3>Resources Overview</h3>
+    
+    </a>
+
+    <!-- Searchable Resource Table -->
+    <table id="resourceTable" class="display">
+        <thead>
+            <tr>
+                <th>Farm Name</th>
+                <th>Resource Type</th>
+                <th>Imported Resources (Units)</th>
+                <th>Used Resources (Units)</th>
+                <th>Available Resources (Units)</th>
+                <th>Stored Resources (Units)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for farm in Farms %}
+                {% for resource in farm.resources.all %}
+                    <tr onclick="updateChart('{{ farm.name }} - {{ resource.resource_type }}', {{ resource.quantity_imported }}, {{ resource.quantity_used }}, {{ resource.quantity_available }}, {{ resource.quantity_stored }})">
+                        <td><a href="{% url 'farm' farm.farm_id %}">{{ farm.name }}</a></td>
+                        <td>{{ resource.resource_type }}</td>
+                        <td>{{ resource.quantity_imported }}</td>
+                        <td>{{ resource.quantity_used }}</td>
+                        <td>{{ resource.quantity_available }}</td>
+                        <td>{{ resource.quantity_stored }}</td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Chart Container -->
+    <canvas id="resourcesChart" height="100"></canvas>
+</div>
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Initialize DataTables
+    $(document).ready(function() {
+        $('#resourceTable').DataTable();
+    });
+
+    // Initialize Chart.js with empty data
+    const ctx = document.getElementById('resourcesChart').getContext('2d');
+    const resourcesChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Imported Resources', 'Used Resources', 'Available Resources', 'Stored Resources'],
+            datasets: [{
+                label: 'Resource Data',
+                data: [0, 0, 0, 0],
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(153, 102, 255, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(153, 102, 255, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
                 }
             }
-        });
-    </script>
+        }
+    });
 
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+    // Function to update the chart with selected resource data
+    function updateChart(label, imported, used, available, stored) {
+        resourcesChart.data.datasets[0].label = label;
+        resourcesChart.data.datasets[0].data = [imported, used, available, stored];
+        resourcesChart.update();
+    }
+</script>
 
-{%endblock%}
+{% endblock %}

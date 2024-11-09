@@ -1,0 +1,112 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+    <style>
+        /* Styling for the farmer cards */
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-img-top {
+            border-radius: 8px 8px 0 0;
+        }
+
+        .card-body {
+            text-align: center;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .card-text {
+            color: #666;
+        }
+
+        .btn-primary {
+            background-color: #5c6bc0;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+        }
+
+        .btn-primary:hover {
+            background-color: #3f51b5;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .text-center {
+            margin-bottom: 30px;
+        }
+
+        /* New Farmer Button Style */
+        .add-farmer-btn {
+            display: inline-block;
+            padding: 10px 25px;
+            font-size: 1rem;
+            background-color: #5c6bc0;
+            color: white;
+            border-radius: 25px;
+            text-decoration: none;
+            text-align: center;
+            margin-bottom: 20px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .add-farmer-btn:hover {
+            background-color: #3f51b5;
+            transform: translateY(-3px);
+        }
+
+        .add-farmer-btn:active {
+            transform: translateY(1px);
+        }
+
+        .row {
+            margin-top: 20px;
+        }
+
+        .col-md-4 {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Farmers</h2>
+
+        <!-- Styled "Add New Farmer" Button -->
+        <a href="{% url 'farmerForm' %}" class="add-farmer-btn">ADD NEW FARMER</a>
+
+        <div class="row">
+            {% for farmer in farmers %}
+                <div class="col-md-4 mb-4">
+                    <div class="card" style="width: 18rem;">
+                        <img src={{farmer.profile_picture.url}} class="card-img-top" alt="Farmer Image">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ farmer.name }}</h5>
+                            <p class="card-text"><strong>Farm:</strong> {{ farmer.farm_name }}</p>
+                            <p class="card-text"><strong>Location:</strong> {{ farmer.location }}</p>
+                            <a href="{% url 'farmer_profile' farmer.farmer_id %}" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p>No farmers available at the moment.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

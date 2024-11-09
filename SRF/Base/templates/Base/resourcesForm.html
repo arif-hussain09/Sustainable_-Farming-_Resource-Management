@@ -1,0 +1,50 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Add Resource for {{ farm.name }}</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        
+        <!-- Show Farm Name as Read-Only -->
+        <div class="mb-3">
+            <label for="farm" class="form-label">Farm Name</label>
+            <input type="text" class="form-control" id="farm" value="{{ farm.name }}" readonly>
+        </div>
+        
+        <!-- Resource Type Dropdown -->
+        <div class="mb-3">
+            <label for="resource_type" class="form-label">Resource Type</label>
+            {{ form.resource_type }}
+        </div>
+
+        <!-- Quantity Imported -->
+        <div class="mb-3">
+            <label for="quantity_imported" class="form-label">Quantity Imported</label>
+            <input type="number" class="form-control" id="quantity_imported" name="quantity_imported" value="{{ form.quantity_imported.value }}" required>
+        </div>
+
+        <!-- Quantity Used -->
+        <div class="mb-3">
+            <label for="quantity_used" class="form-label">Quantity Used</label>
+            <input type="number" class="form-control" id="quantity_used" name="quantity_used" value="{{ form.quantity_used.value }}" required>
+        </div>
+
+        <!-- Quantity Available -->
+        <div class="mb-3">
+            <label for="quantity_available" class="form-label">Quantity Available</label>
+            <input type="number" class="form-control" id="quantity_available" name="quantity_available" value="{{ form.quantity_available.value }}" required>
+        </div>
+
+        <!-- Quantity Stored -->
+        <div class="mb-3">
+            <label for="quantity_stored" class="form-label">Quantity Stored</label>
+            <input type="number" class="form-control" id="quantity_stored" name="quantity_stored" value="{{ form.quantity_stored.value }}" required>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-success">Add Resource</button>
+    </form>
+</div>
+{% endblock %}
