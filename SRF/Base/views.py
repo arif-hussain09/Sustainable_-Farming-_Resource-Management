@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse  # Import reverse to dynamically build URLs
+import requests
 
 from .models import *
 
@@ -123,11 +124,30 @@ def Farms_(request,farm_id):
     ...
 def Crops(request,crop_name):
     crop=get_object_or_404(Crop,name=crop_name)
+     # Wikipedia API to get additional information
+       # Wikipedia API to get crop information
+    wiki_api_url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{crop.name}"
+    wiki_response = requests.get(wiki_api_url).json()
 
+    # Extract information
+    description = wiki_response.get("extract", "Description not available.")
+    image_url = wiki_response.get("thumbnail", {}).get("source", "")
+    page_url = wiki_response.get("content_urls", {}).get("desktop", {}).get("page", "")
+    history_api_url = f"https://en.wikipedia.org/api/rest_v1/page/related/{crop.name}"
+    
+    # Fetch history-related content
+    history_response = requests.get(history_api_url).json()
+    history_info = history_response.get("pages", [{}])[0].get("extract", "Historical information not available.")
 
-    context={
-        'crop':crop,
+    # Context for template rendering
+    context = {
+        'crop': crop,
+        'description': description,
+        'wiki_image_url': image_url,
+        'wiki_page_url': page_url,
+        'history_info': history_info
     }
+
     return render(request, 'Base/crop.html',context=context)
 
 def All_Crops(request):
@@ -244,6 +264,18 @@ def Crop_Form(request):
 
     return render(request,"Base/cropForm.html",context=context)
 
+def Update_Crop_Form(request,crop_name):
+    crop=get_object_or_404(Crop,name=crop_name)
+    form=CropForm(instance=crop)
+    if request.method=="POST":
+        form=CropForm(request.POST ,instance=crop)
+        if form.is_valid():
+            form.save()
+            return redirect('crop', crop_name=crop_name)    
+    context={
+        'Form':form,
+    }
+    return render(request,"Base/cropForm.html",context=context)
 
 
 def Farm_Form(request):
@@ -264,7 +296,7 @@ def Update_Farm_Form(request,farm_id):
     farm=get_object_or_404(Farm,farm_id=farm_id)
     form=FarmForm(instance=farm)
     if request.method=="POST":
-        form=FarmForm(request.POST ,instance=farm)
+        form=FarmForm(request.POST,request.FILES ,instance=farm)
 
         if form.is_valid():
             form.save()
@@ -273,21 +305,7 @@ def Update_Farm_Form(request,farm_id):
         'form':form,
     }
     return render(request,'Base/farmForm.html',context=context)
-# def Resource_Form(request):
-#     form=ResourcesForm()
 
-#     if request.method=="POST":
-#         form=ResourcesForm(request.POST)
-
-#         if form.is_valid():
-#             form.save()
-#             return redirect('resources')
-#     context={
-#         'form':form,
-#     }
-#     return render(request,'Base/resourcesForm.html',context=context)
-
-# View for adding new resource
 def Resource_Form(request,farm_id):
     # Get the farm object based on the farm_id passed in the URL
     farm = get_object_or_404(Farm, farm_id=farm_id)

@@ -45,7 +45,7 @@
 
         <!-- Styled "Add Farm" Link -->
         <h3>
-            <a href="{% url 'farmForm' %}" class="btn btn-primary" style="text-decoration: none; padding: 10px 20px; border-radius: 5px; font-weight: bold; color: white;">Add Farm</a>
+            <a href="{% url 'farmForm' %}" class="btn btn-success" style="text-decoration: none; padding: 10px 20px; border-radius: 5px; font-weight: bold; color: white;">Add Farm</a>
         </h3>
 
         <!-- Render the chart -->
@@ -93,18 +93,18 @@
                 <th>Area (acres)</th>
                 <th>Current Crop</th>
                 <th>Yield (tons)</th>
-                <th>Health Status</th>
+                
             </tr>
         </thead>
         <tbody>
             {% for farm in Farms %}
             <tr>
-                <td><a href="{% url 'farm' farm.farm_id %}">{{ farm.name }}</a></td>
+                <td><a href="{% url 'farm' farm.farm_id %}"class="btn btn-success">{{ farm.name }}</a></td>
                 <td>{{ farm.location }}</td>
                 <td>{{ farm.size }}</td>
                 <td>
                     {% for crop in farm.crops.all %}
-                    <a href="{%url 'crop' crop.name %}">{{ crop.name }}</a> <br>
+                    <a href="{%url 'crop' crop.name %}"class="btn btn-success">{{ crop.name }}</a> <br>
                     {% endfor %}
                 </td>
                 <td>
@@ -112,7 +112,7 @@
                     {{ crop.yield_amount }} <br>
                     {% endfor %}
                 </td>
-                <td>{{ farm.farm_reports.report_details }}</td>
+                
             </tr>
             {% endfor %}
         </tbody>

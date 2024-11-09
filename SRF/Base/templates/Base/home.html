@@ -42,16 +42,22 @@
                     <tbody>
                         {% for farmer in Farmers %}
                         <tr>
-                            <td><a href="{%url 'farmer_profile' farmer.farmer_id%}">{{ farmer.name }}</a></td>
+                            <td>
+                                <a href="{% url 'farmer_profile' farmer.farmer_id %}" class="btn btn-success">
+                                    {{ farmer.name }}
+                                </a>
+                            </td>
                             <td>+91-{{ farmer.contact }}</td>
                             <td>
                                 {% for farm in farmer.farms.all %}
-                                    {{ farm.size }} Acres<br>
+                                    {{ farm.size }} Acres<hr>
                                 {% endfor %}
                             </td>
                             <td>
                                 {% for farm in farmer.farms.all %}
-                                    <a href="{%url 'farm' farm.farm_id%}">{{ farm.name }}</a><br>
+                                <a href="{% url 'farm' farm.farm_id %}" class="btn btn-success">
+                                    {{ farm.name }}
+                                </a><hr>
                                 {% endfor %}
                             </td>
                         </tr>

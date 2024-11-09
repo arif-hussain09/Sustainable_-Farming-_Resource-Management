@@ -98,8 +98,8 @@
                         <img src={{farmer.profile_picture.url}} class="card-img-top" alt="Farmer Image">
                         <div class="card-body">
                             <h5 class="card-title">{{ farmer.name }}</h5>
-                            <p class="card-text"><strong>Farm:</strong> {{ farmer.farm_name }}</p>
-                            <p class="card-text"><strong>Location:</strong> {{ farmer.location }}</p>
+                            <p class="card-text"><strong>Level:</strong> {{ farmer.performance }}</p>
+                            <p class="card-text"><strong>Farms:</strong><l>{%for farm in farmer.farms.all%} {{ farm.name }}<br>{%endfor%}</l></p>
                             <a href="{% url 'farmer_profile' farmer.farmer_id %}" class="btn btn-primary">View Details</a>
                         </div>
                     </div>

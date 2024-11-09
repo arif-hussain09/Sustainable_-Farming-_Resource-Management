@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
     path('',views.Home,name='home'),
     path('crop/<str:crop_name>/',views.Crops,name='crop'),
+    
     path('crops/',views.All_Crops,name='crops'),
     path('resources/',views.Resource,name='resources'),
     path('resourceForm/',views.Resource_Form,name='resourceForm'),
@@ -22,6 +23,7 @@ urlpatterns = [
     path('farmerForm/',views.Farmer_Form,name='farmerForm'),
     path('update-farmerForm/<uuid:farmer_id>/',views.Update_Farmer_Form,name='update-farmerForm'),
     path('cropForm/',views.Crop_Form,name='cropForm'),
+    path('update-cropForm/<str:crop_name>',views.Update_Crop_Form,name='update-cropForm'),
     path('farmForm/',views.Farm_Form,name='farmForm'),
     path('farmReportForm/',views.Farm_Report_Form,name='farmReportForm'),
     path('healthReportForm/',views.Health_Report_Form,name='healthReportForm'),
